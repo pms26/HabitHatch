@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.internal.Logger;
 
+import java.util.Optional;
+
 @Service
 public class UserMgmtService{
     Logger logger = Logger.getLogger(UserMgmtService.class.getName());
@@ -37,7 +39,7 @@ public class UserMgmtService{
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    public ResponseEntity<UserDetailsResponse> getUserDetails(String userId, UserDetailsRequest userRequest) {
+    public ResponseEntity<UserDetailsResponse> addUserDetails(String userId, UserDetailsRequest userRequest) {
 
         Users userEntity = usersDao.findByUserId(userId);
         userEntity.setAge(userRequest.getAge());
@@ -61,17 +63,26 @@ public class UserMgmtService{
         if (userEntity == null) {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
-        if(userRequest.getName()!= null && !userRequest.getName().isEmpty()){
-            userEntity.setName(userRequest.getName());
-        }
-       if(userRequest.getMobileNumber()!= null && !userRequest.getMobileNumber().isEmpty()){
-            userEntity.setMobileNumber(userRequest.getMobileNumber());
-        }
-       if(userRequest.getPassword()!=null && !userRequest.getPassword().isEmpty()){
-            userEntity.setPassword(userRequest.getPassword());
-        }
+        Optional.ofNullable(userRequest.getName()).ifPresent(userEntity::setName);
+        Optional.ofNullable(userRequest.getMobileNumber()).ifPresent(userEntity::setMobileNumber);
+        Optional.ofNullable(userRequest.getPassword()).ifPresent(userEntity::setPassword);
 
         usersDao.save(userEntity);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    public ResponseEntity<UserDetailsResponse> getUser(String userId){
+        Users userEntity = usersDao.findByUserId(userId);
+        if (userEntity == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        UserDetailsResponse getResponse= UserDetailsResponse.builder().age(userEntity.getAge())
+                .heartRate(userEntity.getHeartRate())
+                .height(userEntity.getHeight())
+                .weight(userEntity.getWeight())
+                .userId(userEntity.getUserId())
+                .name(userEntity.getName())
+                .email(userEntity.getEmail())
+                .mobileNumber(userEntity.getMobileNumber()).build();
+        return new ResponseEntity<> ( getResponse,HttpStatus.OK);
     }
 }
