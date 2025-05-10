@@ -1,7 +1,11 @@
 package com.habitHatch.UserMgmt.entity;
 
-import org.springframework.data.annotation.Id;
-
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
+@Builder
 public class UserRequest {
     private String userId;
     private String name;
@@ -9,5 +13,4 @@ public class UserRequest {
     private String mobileNumber;
     private String password;
     private Boolean isPremium;
-
 }
