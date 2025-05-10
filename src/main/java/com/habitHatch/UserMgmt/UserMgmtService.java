@@ -42,6 +42,9 @@ public class UserMgmtService{
     public ResponseEntity<UserDetailsResponse> addUserDetails(String userId, UserDetailsRequest userRequest) {
 
         Users userEntity = usersDao.findByUserId(userId);
+        if (userEntity == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
         userEntity.setAge(userRequest.getAge());
         userEntity.setHeartRate(userRequest.getHeartRate());
         userEntity.setHeight(userRequest.getHeight());
@@ -70,6 +73,7 @@ public class UserMgmtService{
         usersDao.save(userEntity);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     public ResponseEntity<UserDetailsResponse> getUser(String userId){
         Users userEntity = usersDao.findByUserId(userId);
         if (userEntity == null) {
@@ -84,5 +88,13 @@ public class UserMgmtService{
                 .email(userEntity.getEmail())
                 .mobileNumber(userEntity.getMobileNumber()).build();
         return new ResponseEntity<> ( getResponse,HttpStatus.OK);
+    }
+    public ResponseEntity<?> deleteUser(String userId){
+        Users userEntity = usersDao.findByUserId(userId);
+        if (userEntity == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        usersDao.delete(userEntity);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

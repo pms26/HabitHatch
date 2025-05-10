@@ -29,5 +29,10 @@ public class UserMgmtController {
     public ResponseEntity<?> updateUser(@PathVariable String userId, @RequestBody UserRequest userRequest){
         return userService.updateUser(userId,userRequest);
     }
-
+    @DeleteMapping("/v1/user/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable String userId) {
+        return userService.deleteUser(userId);
+    }
+//exception handling
+    //optimization
 }
