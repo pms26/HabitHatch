@@ -3,7 +3,7 @@ package com.habitHatch.UserMgmt;
 import com.habitHatch.UserMgmt.entity.UserDetailsRequest;
 import com.habitHatch.UserMgmt.entity.UserDetailsResponse;
 import com.habitHatch.UserMgmt.entity.UserRequest;
-import com.habitHatch.UserMgmt.entity.UserResponse;
+
 import com.habitHatch.db.Users;
 import com.habitHatch.db.UsersDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +55,23 @@ public class UserMgmtService{
                 .mobileNumber(userEntity.getMobileNumber()).build();
 
         return new ResponseEntity<>(userDetailsResponse,HttpStatus.OK);
+    }
+    public ResponseEntity<?> updateUser(String userId, UserRequest userRequest) {
+        Users userEntity = usersDao.findByUserId(userId);
+        if (userEntity == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+        if(userRequest.getName()!= null && !userRequest.getName().isEmpty()){
+            userEntity.setName(userRequest.getName());
+        }
+       if(userRequest.getMobileNumber()!= null && !userRequest.getMobileNumber().isEmpty()){
+            userEntity.setMobileNumber(userRequest.getMobileNumber());
+        }
+       if(userRequest.getPassword()!=null && !userRequest.getPassword().isEmpty()){
+            userEntity.setPassword(userRequest.getPassword());
+        }
+
+        usersDao.save(userEntity);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

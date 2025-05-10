@@ -6,10 +6,7 @@ import com.habitHatch.UserMgmt.entity.UserRequest;
 import com.habitHatch.UserMgmt.entity.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserMgmtController {
@@ -24,6 +21,10 @@ public class UserMgmtController {
     @PostMapping("/v1/user/details/{userId}")
     public ResponseEntity<UserDetailsResponse> getUserDetails(@PathVariable String userId ,@RequestBody UserDetailsRequest userRequest) {
         return userService.getUserDetails(userId,userRequest);
+    }
+    @PatchMapping("/v1/user/{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable String userId, @RequestBody UserRequest userRequest){
+        return userService.updateUser(userId,userRequest);
     }
 
 }
