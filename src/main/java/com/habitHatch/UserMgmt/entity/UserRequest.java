@@ -10,7 +10,7 @@ public class UserRequest {
     private String userId;
     private String name;
     private String email;
-    private String mobileNumber;
+    private Long mobileNumber;
     private String password;
     private Boolean isPremium;
 }

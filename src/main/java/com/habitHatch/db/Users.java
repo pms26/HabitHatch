@@ -22,19 +22,19 @@ public class Users {
     @Column(name = "email")
     private String email;
     @Column(name = "mobile_number")
-    private String mobileNumber;
+    private Long mobileNumber;
     @Column(name = "password")
     private String password;
     @Column(name = "is_premium")
     private Boolean isPremium;
     @Column(name = "weight")
-    private String weight;
+    private Integer weight;
     @Column(name = "height")
-    private String height;
+    private Integer height;
     @Column(name = "age")
-    private String age;
+    private Integer age;
     @Column(name = "heart_rate")
-    private String heartRate;
+    private Integer heartRate;
 
 
 }
