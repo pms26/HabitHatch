@@ -1,5 +1,6 @@
 package com.habitHatch.UserMgmt;
 
+import com.habitHatch.Exception.MandatoryParameterException;
 import com.habitHatch.UserMgmt.entity.UserDetailsRequest;
 import com.habitHatch.UserMgmt.entity.UserDetailsResponse;
 import com.habitHatch.UserMgmt.entity.UserRequest;
@@ -20,12 +21,27 @@ public class UserMgmtService{
 
     @Autowired
     UsersDao usersDao;
-    public ResponseEntity<?> createUser(UserRequest userRequest) {
-        //save in db
+
+    public ResponseEntity<?> createUser(UserRequest userRequest) throws Exception {
+        //save in db Abd ABD abd
+        try{
         logger.warn("Creating user with ID: " + userRequest);
-        if (userRequest.getUserId() == null || userRequest.getUserId().isEmpty()) {
-            return new ResponseEntity<>("User ID is required", HttpStatus.BAD_REQUEST);
+        if (userRequest.getUserId() == null || userRequest.getUserId().isEmpty() || userRequest.getUserId().equalsIgnoreCase(" ")) {
+            throw new MandatoryParameterException("102", "Mandatory parameter missing: User ID");
         }
+        if(userRequest.getName() == null || userRequest.getName().isEmpty() || userRequest.getName().equalsIgnoreCase(" ")){
+            throw new MandatoryParameterException("102", "Mandatory parameter missing: Name");
+        }
+        if(userRequest.getEmail() == null || userRequest.getEmail().isEmpty() || userRequest.getEmail().equalsIgnoreCase(" ")){
+            throw new MandatoryParameterException("102", "Mandatory parameter missing: Email");
+        }
+        if(userRequest.getMobileNumber() == null){
+            throw new MandatoryParameterException("102", "Mandatory parameter missing: Mobile Number");
+        }
+        if(userRequest.getPassword() == null || userRequest.getPassword().isEmpty() || userRequest.getPassword().equalsIgnoreCase(" ")){
+            throw new MandatoryParameterException("102", "Mandatory parameter missing: Password");
+        }
+
         logger.warn("Creating user with ID: " + userRequest);
         Users userEntity = new Users();
         userEntity.setUserId(userRequest.getUserId());
@@ -37,6 +53,14 @@ public class UserMgmtService{
 
         usersDao.save(userEntity);
         return new ResponseEntity<>(HttpStatus.CREATED);
+
+        } catch(MandatoryParameterException e){
+            logger.warn("Error creating user: " + e.getMessage());
+            throw e;
+        } catch(Exception e){
+            logger.warn("Error creating user: " + e.getMessage());
+            throw new Exception("Error creating user: " + e.getMessage());
+        }
     }
 
     public ResponseEntity<UserDetailsResponse> addUserDetails(String userId, UserDetailsRequest userRequest) {
