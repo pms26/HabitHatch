@@ -1,5 +1,7 @@
 package com.habitHatch.UserMgmt;
 
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 import com.habitHatch.Exception.MandatoryParameterException;
 import com.habitHatch.Exception.UserExistsException;
 import com.habitHatch.UserMgmt.entity.UserDetailsRequest;
@@ -47,6 +49,28 @@ public class UserMgmtService{
             Users userExists = usersDao.findByUserId(userRequest.getUserId());
         if(null != userExists) {
             throw new UserExistsException("103", "User already exists with ID: " + userRequest.getUserId());
+        }
+
+        //Check the name should be 3 letter atleast
+      if(userRequest.getName().length()<3 ){
+          throw new UserExistsException("HH_User_103","Name should greater than 3 characters");
+      }
+
+      //password validation with regex
+        if(!userRequest.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[\\\\W_]).+$")) {
+            throw new UserExistsException("HH_User_104", "Password should contain at least 8 characters i.e., one uppercase letter, one lowercase letter, and one special character");
+        }
+
+        // Check Email validation
+        if(!userRequest.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            throw new UserExistsException("HH_User_105", "Email is not valid");
+        }
+
+        // Check Mobile Number validation
+            boolean isValid = PhoneNumberUtil.getInstance().isValidNumber(PhoneNumberUtil.getInstance().parse(userRequest.getMobileNumber().toString(),"IN"));
+    logger.warn("isValid"+ isValid);
+        if(!isValid){
+            throw new UserExistsException("HH_User_106", "Mobile number is not valid");
         }
         Users userEntity = new Users();
         userEntity.setUserId(userRequest.getUserId());

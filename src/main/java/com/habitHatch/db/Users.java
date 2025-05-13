@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,12 +20,14 @@ public class Users {
     @Column(name = "user_id")
     private String userId;
     @Column(name = "name")
+
     private String name;
     @Column(name = "email")
     private String email;
     @Column(name = "mobile_number")
     private Long mobileNumber;
     @Column(name = "password")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).+$", message = "Password must contain at least one uppercase letter, one lowercase letter, and one special character")
     private String password;
     @Column(name = "is_premium")
     private Boolean isPremium;
