@@ -15,5 +15,14 @@ public class ErrorHandler {
                         .build();
         return (new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST));
     }
+    @ExceptionHandler(UserExistsException.class)
+    public ResponseEntity<?> handleUserExistsException(UserExistsException ue){
+        ErrorResponse errorResponse=
+                ErrorResponse.builder()
+                        .errorCode(ue.getErrorCode())
+                        .errorMessage(ue.getErrorMessage())
+                        .build();
+        return (new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST));
+    }
 
 }

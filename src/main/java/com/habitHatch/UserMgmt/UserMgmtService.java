@@ -1,6 +1,7 @@
 package com.habitHatch.UserMgmt;
 
 import com.habitHatch.Exception.MandatoryParameterException;
+import com.habitHatch.Exception.UserExistsException;
 import com.habitHatch.UserMgmt.entity.UserDetailsRequest;
 import com.habitHatch.UserMgmt.entity.UserDetailsResponse;
 import com.habitHatch.UserMgmt.entity.UserRequest;
@@ -42,7 +43,11 @@ public class UserMgmtService{
             throw new MandatoryParameterException("102", "Mandatory parameter missing: Password");
         }
 
-        logger.warn("Creating user with ID: " + userRequest);
+        // Check if user already exists
+            Users userExists = usersDao.findByUserId(userRequest.getUserId());
+        if(null != userExists) {
+            throw new UserExistsException("103", "User already exists with ID: " + userRequest.getUserId());
+        }
         Users userEntity = new Users();
         userEntity.setUserId(userRequest.getUserId());
         userEntity.setName(userRequest.getName());
@@ -54,7 +59,7 @@ public class UserMgmtService{
         usersDao.save(userEntity);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
-        } catch(MandatoryParameterException e){
+        } catch(MandatoryParameterException | UserExistsException e){
             logger.warn("Error creating user: " + e.getMessage());
             throw e;
         } catch(Exception e){
