@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 @Builder
 public class UserDetailsRequest {
-    private String weight;
-    private String height;
-    private String age;
-    private String heartRate;
+    private Integer weight;
+    private Integer height;
+    private Integer age;
+    private Integer heartRate;
 }

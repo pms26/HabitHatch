@@ -1,5 +1,10 @@
 package com.habitHatch.UserMgmt;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
+import com.habitHatch.Exception.MandatoryParameterException;
+import com.habitHatch.Exception.InvalidValueException;
 import com.habitHatch.UserMgmt.entity.UserDetailsRequest;
 import com.habitHatch.UserMgmt.entity.UserDetailsResponse;
 import com.habitHatch.UserMgmt.entity.UserRequest;
@@ -20,13 +25,13 @@ public class UserMgmtService{
 
     @Autowired
     UsersDao usersDao;
-    public ResponseEntity<?> createUser(UserRequest userRequest) {
-        //save in db
+
+    public ResponseEntity<?> createUser(UserRequest userRequest) throws Exception {
+
+        try{
         logger.warn("Creating user with ID: " + userRequest);
-        if (userRequest.getUserId() == null || userRequest.getUserId().isEmpty()) {
-            return new ResponseEntity<>("User ID is required", HttpStatus.BAD_REQUEST);
-        }
-        logger.warn("Creating user with ID: " + userRequest);
+        validateUserRequest(userRequest);
+
         Users userEntity = new Users();
         userEntity.setUserId(userRequest.getUserId());
         userEntity.setName(userRequest.getName());
@@ -37,13 +42,22 @@ public class UserMgmtService{
 
         usersDao.save(userEntity);
         return new ResponseEntity<>(HttpStatus.CREATED);
+
+        } catch(MandatoryParameterException | InvalidValueException e){
+            logger.warn("Error creating user: " + e.getMessage());
+            throw e;
+        } catch(Exception e){
+            logger.warn("Error creating user: " + e.getMessage());
+            throw new Exception("Error in creating user");
+        }
     }
 
-    public ResponseEntity<UserDetailsResponse> addUserDetails(String userId, UserDetailsRequest userRequest) {
+
+    public ResponseEntity<UserDetailsResponse> addUserDetails(String userId, UserDetailsRequest userRequest) throws InvalidValueException {
 
         Users userEntity = usersDao.findByUserId(userId);
         if (userEntity == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            throw new InvalidValueException("HH_User_106", "User not found with ID :" + userId);
         }
         userEntity.setAge(userRequest.getAge());
         userEntity.setHeartRate(userRequest.getHeartRate());
@@ -61,11 +75,12 @@ public class UserMgmtService{
 
         return new ResponseEntity<>(userDetailsResponse,HttpStatus.OK);
     }
-    public ResponseEntity<?> updateUser(String userId, UserRequest userRequest) {
+    public ResponseEntity<?> updateUser(String userId, UserRequest userRequest) throws InvalidValueException, NumberParseException, MandatoryParameterException {
         Users userEntity = usersDao.findByUserId(userId);
         if (userEntity == null) {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            throw new InvalidValueException("HH_User_106", "User not found with ID :" + userId);
         }
+        validateUserRequest(userRequest);
         Optional.ofNullable(userRequest.getName()).ifPresent(userEntity::setName);
         Optional.ofNullable(userRequest.getMobileNumber()).ifPresent(userEntity::setMobileNumber);
         Optional.ofNullable(userRequest.getPassword()).ifPresent(userEntity::setPassword);
@@ -74,10 +89,10 @@ public class UserMgmtService{
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<UserDetailsResponse> getUser(String userId){
+    public ResponseEntity<UserDetailsResponse> getUser(String userId) throws InvalidValueException {
         Users userEntity = usersDao.findByUserId(userId);
         if (userEntity == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            throw new InvalidValueException("HH_User_106", "User not found with ID :" + userId);
         }
         UserDetailsResponse getResponse= UserDetailsResponse.builder().age(userEntity.getAge())
                 .heartRate(userEntity.getHeartRate())
@@ -89,12 +104,60 @@ public class UserMgmtService{
                 .mobileNumber(userEntity.getMobileNumber()).build();
         return new ResponseEntity<> ( getResponse,HttpStatus.OK);
     }
-    public ResponseEntity<?> deleteUser(String userId){
+    public ResponseEntity<?> deleteUser(String userId) throws InvalidValueException {
         Users userEntity = usersDao.findByUserId(userId);
         if (userEntity == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            throw new InvalidValueException("HH_User_106", "User not found with ID :" + userId);
         }
         usersDao.delete(userEntity);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    private void validateUserRequest(UserRequest userRequest) throws MandatoryParameterException, InvalidValueException, NumberParseException {
+        checkMandatoryParameters(userRequest);
+        checkInvalidValue(userRequest);
+
+    }
+    private void checkMandatoryParameters(UserRequest userRequest) throws MandatoryParameterException {
+        if (userRequest.getUserId() == null || userRequest.getUserId().isEmpty() || userRequest.getUserId().equalsIgnoreCase(" ")) {
+            throw new MandatoryParameterException("HH_User_102", "Mandatory parameter missing: User ID");
+        }
+        if(userRequest.getName() == null || userRequest.getName().isEmpty() || userRequest.getName().equalsIgnoreCase(" ")){
+            throw new MandatoryParameterException("HH_User_102", "Mandatory parameter missing: Name");
+        }
+        if(userRequest.getEmail() == null || userRequest.getEmail().isEmpty() || userRequest.getEmail().equalsIgnoreCase(" ")){
+            throw new MandatoryParameterException("HH_User_102", "Mandatory parameter missing: Email");
+        }
+        if(userRequest.getMobileNumber() == null){
+            throw new MandatoryParameterException("HH_User_102", "Mandatory parameter missing: Mobile Number");
+        }
+        if(userRequest.getPassword() == null || userRequest.getPassword().isEmpty() || userRequest.getPassword().equalsIgnoreCase(" ")){
+            throw new MandatoryParameterException("HH_User_102", "Mandatory parameter missing: Password");
+        }
+    }
+    private void checkInvalidValue(UserRequest userRequest) throws InvalidValueException, NumberParseException {
+        // Check if user already exists
+        Users userExists = usersDao.findByUserId(userRequest.getUserId());
+        if(null != userExists) {
+            throw new InvalidValueException("HH_User_103", "User already exists with ID: " + userRequest.getUserId());
+        }
+        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+        Phonenumber.PhoneNumber parsedNumber = phoneNumberUtil.parse(userRequest.getMobileNumber().toString(), userRequest.getCountryCode());
+        if (!phoneNumberUtil.isValidNumber(parsedNumber)) {
+            throw new InvalidValueException("HH_User_104", "Invalid phone number: " + userRequest.getMobileNumber());
+        }
+        //Check the name should be 3 letter atleast
+        if(userRequest.getName().length()<3 ){
+            throw new InvalidValueException("HH_User_103","Name should greater than 3 characters");
+        }
+        //password validation with regex
+        if(!userRequest.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[\\W_]).+$")) {
+            throw new InvalidValueException("HH_User_104", "Password should contain at least 8 characters i.e., one uppercase letter, one lowercase letter, and one special character");
+        }
+        // Check Email validation
+        if(!userRequest.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            throw new InvalidValueException("HH_User_105", "Email is not valid");
+        }
+    }
+
 }

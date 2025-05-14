@@ -14,6 +14,6 @@ public class UserResponse {
     private String userId;
     private String name;
     private String email;
-    private String mobileNumber;
+    private Long mobileNumber;
     private Boolean isPremium;
 }
