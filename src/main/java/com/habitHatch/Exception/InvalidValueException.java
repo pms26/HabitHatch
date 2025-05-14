@@ -7,11 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class UserExistsException extends Exception {
+public class InvalidValueException extends Exception {
 
     private String errorCode;
     private String errorMessage;
-    public UserExistsException(String errorCode, String errorMessage) {
+    public InvalidValueException(String errorCode, String errorMessage) {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }

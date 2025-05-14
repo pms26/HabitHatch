@@ -15,14 +15,22 @@ public class ErrorHandler {
                         .build();
         return (new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST));
     }
-    @ExceptionHandler(UserExistsException.class)
-    public ResponseEntity<?> handleUserExistsException(UserExistsException ue){
+    @ExceptionHandler(InvalidValueException.class)
+    public ResponseEntity<?> handleUserExistsException(InvalidValueException ue){
         ErrorResponse errorResponse=
                 ErrorResponse.builder()
                         .errorCode(ue.getErrorCode())
                         .errorMessage(ue.getErrorMessage())
                         .build();
         return (new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST));
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleException(Exception e){
+        ErrorResponse errorResponse =
+                ErrorResponse.builder().errorCode("HH_101")
+                        .errorMessage(e.getMessage())
+                        .build();
+        return (new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
 }
