@@ -56,6 +56,11 @@
 			<version>8.3.0</version> <!-- or latest version -->
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.googlecode.libphonenumber</groupId>
+			<artifactId>libphonenumber</artifactId>
+			<version>8.13.15</version> <!-- Use the latest version -->
+		</dependency>
 	</dependencies>
 
 	<build>

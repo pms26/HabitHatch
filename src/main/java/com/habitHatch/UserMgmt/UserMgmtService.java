@@ -1,5 +1,8 @@
 package com.habitHatch.UserMgmt;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 import com.habitHatch.Exception.MandatoryParameterException;
 import com.habitHatch.Exception.UserExistsException;
 import com.habitHatch.UserMgmt.entity.UserDetailsRequest;
@@ -47,6 +50,11 @@ public class UserMgmtService{
             Users userExists = usersDao.findByUserId(userRequest.getUserId());
         if(null != userExists) {
             throw new UserExistsException("103", "User already exists with ID: " + userRequest.getUserId());
+        }
+        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+        Phonenumber.PhoneNumber parsedNumber = phoneNumberUtil.parse(userRequest.getMobileNumber().toString(), userRequest.getCountryCode());
+        if (!phoneNumberUtil.isValidNumber(parsedNumber)) {
+            throw new MandatoryParameterException("104", "Invalid phone number: " + userRequest.getMobileNumber());
         }
         Users userEntity = new Users();
         userEntity.setUserId(userRequest.getUserId());

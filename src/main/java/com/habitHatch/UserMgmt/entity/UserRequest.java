@@ -11,6 +11,7 @@ public class UserRequest {
     private String name;
     private String email;
     private Long mobileNumber;
+    private String countryCode;
     private String password;
     private Boolean isPremium;
 }
