@@ -37,6 +37,8 @@ public class Users {
     private Integer height;
     @Column(name = "age")
     private Integer age;
+    @Column(name="gender")
+    private String gender;
     @Column(name = "heart_rate")
     private Integer heartRate;
 
