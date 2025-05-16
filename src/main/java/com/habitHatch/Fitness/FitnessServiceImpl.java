@@ -43,4 +43,15 @@ public class FitnessServiceImpl {
         // Convert milliliters to liters for the final result
         return new ResponseEntity<>(waterIntakeInMl / 1000, HttpStatus.OK);
     }
+
+    public ResponseEntity<Double> getBMI(String userId) throws InvalidValueException {
+        Users userEntity = usersDao.findByUserId(userId);
+        if (userEntity == null) {
+            throw new InvalidValueException("HH_User_106", "User not found with ID :" + userId);
+        }
+        double heightInMeters = userEntity.getHeight() / 100.0; // Convert height from cm to meters
+        double weightInKg = userEntity.getWeight(); // Weight is already in kg
+        double bmi = weightInKg / (heightInMeters * heightInMeters);
+        return new ResponseEntity<>(bmi,HttpStatus.OK);
+    }
 }
