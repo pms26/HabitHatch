@@ -49,9 +49,8 @@ public class FitnessServiceImpl {
         if (userEntity == null) {
             throw new InvalidValueException("HH_User_106", "User not found with ID :" + userId);
         }
-        double heightInMeters = userEntity.getHeight() / 100.0; // Convert height from cm to meters
-        double weightInKg = userEntity.getWeight(); // Weight is already in kg
-        double bmi = weightInKg / (heightInMeters * heightInMeters);
-        return new ResponseEntity<>(bmi,HttpStatus.OK);
+
+        double bmi = userEntity.getWeight() / ((userEntity.getHeight() / 100.0) * (userEntity.getHeight() / 100.0));
+        return new ResponseEntity<>(Math.ceil(bmi * 100) / 100.0,HttpStatus.OK);
     }
 }
