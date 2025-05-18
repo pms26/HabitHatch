@@ -134,6 +134,12 @@ public class UserMgmtService{
         if(userRequest.getPassword() == null || userRequest.getPassword().isEmpty() || userRequest.getPassword().equalsIgnoreCase(" ")){
             throw new MandatoryParameterException("HH_User_102", "Mandatory parameter missing: Password");
         }
+        if(userRequest.getCountryCode() == null || userRequest.getCountryCode().isEmpty() || userRequest.getCountryCode().equalsIgnoreCase(" ")){
+            throw new MandatoryParameterException("HH_User_102", "Mandatory parameter missing: Country Code");
+        }
+        if(userRequest.getGender() == null || userRequest.getGender().isEmpty() ) {
+            throw new MandatoryParameterException("HH_User_102","Mandatory parameter missing: Gender");
+        }
     }
     private void checkInvalidValue(UserRequest userRequest) throws InvalidValueException, NumberParseException {
         // Check if user already exists
