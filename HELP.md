@@ -3,28 +3,40 @@ APIs:-
 
 1)User Management (/v1/users):
  * POST: This operation is used to create a new user in the system. The request body will contain essential user details such as their name, age, weight, height, and potentially a default daily goal for water intake.
+ * POST : user details
  * GET: This operation retrieves the details of a logged-in user. The request will typically include an authentication token to verify the user's identity.
  * PATCH: This operation allows a logged-in user to update their profile information. The request body will include the updated details, such as name, age, weight, height, and daily water intake goal.
  * DELETE: This operation allows a logged-in user to delete their account. The request will likely require authentication to ensure that the user is authorized to perform this action.
-2)Summary (/v1/user/summary/{userId}):
-   * GET: This operation retrieves a daily or weekly summary of the logged-in user's tracked data. This summary would likely include their total water intake, total exercise duration, and their current BMI for the specified period.
- 3)BMI Calculation and Update (/v1/bmi):
+   3)BMI Calculation and Update (/v1/bmi):
 * GET: This operation specifically calculates and retrieves the current BMI for the logged-in user, using their latest weight and height.
-* PUT: This operation allows the logged-in user to update their weight and/or height, which in turn would trigger an update to their BMI.
-4)Water Intake (/v1/water):
- * POST: This operation allows a logged-in user to record their water consumption. The request will include the amount of water they drank (typically in milliliters) and the timestamp of when they consumed it.
- * GET: This operation enables a logged-in user to retrieve their past water intake history. The request will likely allow specifying a particular date or a range of dates to filter the results.
-5)Fitness Tracking (/v1/fitness):
- * POST: This operation is used for a logged-in user to record a new fitness activity. The request will include details about the activity, such as its type (e.g., running, swimming), the duration of the activity, and the timestamp when it occurred.
- * GET: This operation allows a logged-in user to retrieve their history of recorded fitness activities. Similar to water intake history, it will likely support filtering by a specific date or a range of dates.
+  4)Water Intake (/v1/water):
+* GET: This operation enables a logged-in user to retrieve their past water intake history. The request will likely allow specifying a particular date or a range of dates to filter the results.
+
+
+ * 2)Summary (/v1/user/summary/{userId}):
+   * GET: This operation retrieves a daily or weekly summary of the logged-in user's tracked data. This summary would likely include their total water intake, total exercise duration, and their current BMI for the specified period.
 6)Activity Tracking (/v1/activities):
- * POST: This operation provides a unified way to record various types of activities, which could include water intake, exercise, or even food consumption in the future. The request body will need to specify the type of activity (e.g., "water", "exercise", "food") along with the relevant value (e.g., amount in ml, duration in minutes, food item and quantity) and a timestamp.
- * GET: This operation allows a logged-in user to retrieve all recorded activities across different types (if implemented) for a specific date or a range of dates.
-7) 7 day exercise tracker:
+   * water reminder per hour + 1 liter kafka notification  as 12 hours/(liters of water)
+   * exercise reminder per hour + 2 notifications kafka notification 
+ 7) 6 day exercise tracker:
+yoga
+suryanamaskar
+abs
+zumba
+
  * POST: This operation is used to record detailed exercise information for a specific day, potentially including the types of exercises performed, the number of sets, repetitions, and other relevant metrics.
  * GET: This operation allows a logged-in user to retrieve their exercise tracking data for the past 7 days, likely organized on a per-day basis and including the recorded details (counts, repetitions, etc.).
 8)Exercise info and benefits:
      AI based exercise info and benefits
+
+cloud deploy
+swagger
+kafka
+front end
+liquibase
+AI combine
+microservices-Rest api integration
+
 Proceeding with Development
 Here's a suggested roadmap for developing these APIs:
 *Java spring boot
