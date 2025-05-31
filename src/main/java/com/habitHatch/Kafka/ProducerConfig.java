@@ -8,6 +8,11 @@ public class ProducerConfig {
 
     private KafkaTemplate<String,String> kafkaTemplate;
 
+    public ProducerConfig(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
+
+
     public void produceMessage(String topic, String message) {
         kafkaTemplate.send(topic, message);
     }
