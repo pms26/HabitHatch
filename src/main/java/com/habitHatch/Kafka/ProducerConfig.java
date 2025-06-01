@@ -11,8 +11,6 @@ public class ProducerConfig {
     public ProducerConfig(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
-
-
     public void produceMessage(String topic, String message) {
         kafkaTemplate.send(topic, message);
     }
