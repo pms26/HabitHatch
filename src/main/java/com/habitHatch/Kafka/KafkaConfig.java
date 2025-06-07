@@ -7,9 +7,10 @@ import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
 public class KafkaConfig {
+
     @Bean
-    public NewTopic createTopic() {
-        return TopicBuilder.name("HabitHatchTopic").build();
+    public NewTopic createTopicJson() {
+        return TopicBuilder.name("HabitHatchTopic_Json").build();
     }
 
 }

@@ -13,4 +13,11 @@ import lombok.Setter;
 @Schema(description = "Water Intake")
 public class WaterIntakeResp {
     private String message;
+
+    public WaterIntakeResp() {
+    }
+    public WaterIntakeResp(String message) {
+        this.message = message;
+    }
+
 }

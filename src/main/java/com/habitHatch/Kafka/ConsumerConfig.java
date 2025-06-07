@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ConsumerConfig {
-    @KafkaListener(topics = "HabitHatchTopic", groupId = "habit-hatch-group")
-    public ResponseEntity<WaterIntakeResp> consumeMessage(WaterIntake message){
-        WaterIntakeResp response= WaterIntakeResp.builder().
-                message("Message sent to kafka topic successfully").build();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @KafkaListener(topics = "HabitHatchTopic_Json", groupId = "habit-hatch-group")
+    public ResponseEntity<String> consumeMessage(WaterIntake message){
+
+        return new ResponseEntity<>("Message received from Kafka topic successfully", HttpStatus.OK);
+
 
     }
 
