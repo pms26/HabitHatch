@@ -1,5 +1,6 @@
 package com.habitHatch.UserMgmt.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@Schema(description = "User Request")
 public class UserRequest {
     private String userId;
     private String name;
