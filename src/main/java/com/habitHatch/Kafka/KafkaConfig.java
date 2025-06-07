@@ -11,4 +11,5 @@ public class KafkaConfig {
     public NewTopic createTopic() {
         return TopicBuilder.name("HabitHatchTopic").build();
     }
+
 }
