@@ -52,6 +52,7 @@ public class FitnessServiceImpl {
 
         double bmi = userEntity.getWeight() / ((userEntity.getHeight() / 100.0) * (userEntity.getHeight() / 100.0));
         userEntity.setBmi(bmi);
+        usersDao.save(userEntity);
         return new ResponseEntity<>(Math.ceil(bmi * 100) / 100.0,HttpStatus.OK);
     }
 }
