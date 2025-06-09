@@ -41,6 +41,10 @@ public class Users {
     private String gender;
     @Column(name = "heart_rate")
     private Integer heartRate;
+    @Column(name="bmi")
+    private Double bmi;
+    @Column(name="water_intake")
+    private Double waterIntake;
 
 
 }
