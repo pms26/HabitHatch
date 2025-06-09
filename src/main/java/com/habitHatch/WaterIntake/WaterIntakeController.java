@@ -1,4 +1,4 @@
-package com.habitHatch.WaterIntakeKafka;
+package com.habitHatch.WaterIntake;
 
 import org.springframework.stereotype.Controller;
 
