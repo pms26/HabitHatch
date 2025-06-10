@@ -1,4 +1,4 @@
-package com.habitHatch.WaterIntake.entity;
+package com.habitHatch.WaterIntake.enitity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
