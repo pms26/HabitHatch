@@ -1,5 +1,6 @@
 package com.habitHatch.WaterIntake;
 
+import com.habitHatch.Exception.InvalidValueException;
 import com.habitHatch.Kafka.ProducerConfig;
 import com.habitHatch.WaterIntake.entityClass.WaterIntake;
 import com.habitHatch.db.Users;
@@ -18,8 +19,11 @@ public class WaterIntakeService {
     public ProducerConfig producerConfig;
 
 
-    public ResponseEntity<?> WaterReminderCalculator(String userId, Double waterConsumed) {
+    public ResponseEntity<?> WaterReminderCalculator(String userId, Double waterConsumed) throws InvalidValueException {
         Users userEntity = usersDao.findByUserId(userId);
+        if (userEntity == null) {
+            throw new InvalidValueException("HH_User_106", "User not found with ID :" + userId);
+        }
         Double totalWaterIntake = userEntity.getWaterIntake();
         double waterToDrink, waterReminder;
         waterToDrink = totalWaterIntake - waterConsumed;

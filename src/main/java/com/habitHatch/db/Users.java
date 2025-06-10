@@ -45,6 +45,4 @@ public class Users {
     private Double bmi;
     @Column(name="water_intake")
     private Double waterIntake;
-
-
 }
