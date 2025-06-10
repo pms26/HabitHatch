@@ -1,7 +1,7 @@
 package com.habitHatch.Kafka;
 
-import com.habitHatch.WaterIntake.entity.WaterIntake;
-import com.habitHatch.WaterIntake.entity.WaterIntakeResp;
+import com.habitHatch.WaterIntake.entityClass.WaterIntake;
+import com.habitHatch.WaterIntake.entityClass.WaterIntakeResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

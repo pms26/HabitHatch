@@ -1,4 +1,4 @@
-package com.habitHatch.WaterIntake.enitity;
+package com.habitHatch.WaterIntake.entityClass;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -15,20 +15,20 @@ import lombok.Setter;
 @Schema(description = "Water Intake")
 public class WaterIntake {
     private String userId;
-    private String waterIntakeInMl;
-    private String waterToDrinkInMl;
-    private String waterReminder;
-    private String waterConsumedinML;
+    private Double waterIntakeInMl;
+    private Double waterToDrinkInMl;
+    private Double waterReminder;
+    private Double waterConsumedinML;
 
     public WaterIntake() {
     }
 
     @JsonCreator
     public WaterIntake(@JsonProperty("userId") String userId,
-                       @JsonProperty("waterIntakeInMl") String waterIntakeInMl,
-                       @JsonProperty("waterToDrinkInMl") String waterToDrinkInMl,
-                       @JsonProperty("waterReminder") String waterReminder,
-                       @JsonProperty("waterConsumedinML") String waterConsumedinML) {
+                       @JsonProperty("waterIntakeInMl") Double waterIntakeInMl,
+                       @JsonProperty("waterToDrinkInMl") Double waterToDrinkInMl,
+                       @JsonProperty("waterReminder") Double waterReminder,
+                       @JsonProperty("waterConsumedinML") Double waterConsumedinML) {
         this.userId = userId;
         this.waterIntakeInMl = waterIntakeInMl;
         this.waterToDrinkInMl = waterToDrinkInMl;

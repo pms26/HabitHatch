@@ -1,8 +1,12 @@
 package com.habitHatch.WaterIntake;
 
+import com.habitHatch.Kafka.ProducerConfig;
+import com.habitHatch.WaterIntake.entityClass.WaterIntake;
 import com.habitHatch.db.Users;
 import com.habitHatch.db.UsersDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -10,14 +14,19 @@ import org.springframework.stereotype.Service;
 public class WaterIntakeService {
     @Autowired
     UsersDao usersDao;
+    @Autowired
+    public ProducerConfig producerConfig;
 
 
-    Double WaterReminderCalculator(String userId, Double waterConsumed) {
+    public ResponseEntity<?> WaterReminderCalculator(String userId, Double waterConsumed) {
         Users userEntity = usersDao.findByUserId(userId);
         Double totalWaterIntake = userEntity.getWaterIntake();
         double waterToDrink, waterReminder;
         waterToDrink = totalWaterIntake - waterConsumed;
-        waterReminder = waterToDrink / 5; // Assuming 5 reminders in a day
-        return waterReminder;
+        waterReminder = waterToDrink / 5;
+        WaterIntake waterIntake = WaterIntake.builder().waterIntakeInMl(totalWaterIntake).waterConsumedinML(waterConsumed).waterToDrinkInMl(waterToDrink).waterReminder(waterReminder).build();
+       producerConfig.produceMessage("HabitHatchTopic_Json", waterIntake);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

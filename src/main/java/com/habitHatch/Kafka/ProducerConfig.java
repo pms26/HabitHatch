@@ -1,6 +1,6 @@
 package com.habitHatch.Kafka;
 
-import com.habitHatch.WaterIntake.enitity.WaterIntake;
+import com.habitHatch.WaterIntake.entityClass.WaterIntake;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
