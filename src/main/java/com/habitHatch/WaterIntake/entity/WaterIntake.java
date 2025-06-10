@@ -17,15 +17,22 @@ public class WaterIntake {
     private String userId;
     private String waterIntakeInMl;
     private String waterToDrinkInMl;
+    private String waterReminder;
+    private String waterConsumedinML;
 
     public WaterIntake() {
     }
+
     @JsonCreator
     public WaterIntake(@JsonProperty("userId") String userId,
                        @JsonProperty("waterIntakeInMl") String waterIntakeInMl,
-                       @JsonProperty("waterToDrinkInMl") String waterToDrinkInMl) {
+                       @JsonProperty("waterToDrinkInMl") String waterToDrinkInMl,
+                       @JsonProperty("waterReminder") String waterReminder,
+                       @JsonProperty("waterConsumedinML") String waterConsumedinML) {
         this.userId = userId;
         this.waterIntakeInMl = waterIntakeInMl;
         this.waterToDrinkInMl = waterToDrinkInMl;
+        this.waterReminder = waterReminder;
+        this.waterConsumedinML = waterConsumedinML;
     }
 }
