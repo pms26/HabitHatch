@@ -15,8 +15,9 @@ import lombok.Setter;
 @Schema(description = "Water Intake")
 public class WaterIntake {
     private String userId;
-    private Double waterIntakeInMl;
-    private Double waterToDrinkInMl;
+    private String userEmail;
+    private Double totalWaterIntake;
+    private Double waterToDrink;
     private Double waterReminder;
     private Double waterConsumedinML;
 
@@ -25,14 +26,17 @@ public class WaterIntake {
 
     @JsonCreator
     public WaterIntake(@JsonProperty("userId") String userId,
+                       @JsonProperty("userEmail") String userEmail,
                        @JsonProperty("waterIntakeInMl") Double waterIntakeInMl,
                        @JsonProperty("waterToDrinkInMl") Double waterToDrinkInMl,
                        @JsonProperty("waterReminder") Double waterReminder,
                        @JsonProperty("waterConsumedinML") Double waterConsumedinML) {
         this.userId = userId;
-        this.waterIntakeInMl = waterIntakeInMl;
-        this.waterToDrinkInMl = waterToDrinkInMl;
+        this.userEmail = userEmail;
+        this.totalWaterIntake = waterIntakeInMl;
+        this.waterToDrink = waterToDrinkInMl;
         this.waterReminder = waterReminder;
         this.waterConsumedinML = waterConsumedinML;
+
     }
 }

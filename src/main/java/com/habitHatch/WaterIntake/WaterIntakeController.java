@@ -13,7 +13,7 @@ public class WaterIntakeController {
     private WaterIntakeService waterIntakeService;
 
     @PostMapping("/v1/water-intake/reminder")
-    public ResponseEntity<?> calculateWaterReminder(@RequestParam  String userId, @RequestParam Double waterConsumed) throws InvalidValueException {
-        return waterIntakeService.WaterReminderCalculator(userId, waterConsumed);
+    public ResponseEntity<?> getWaterConsumed(@RequestParam  String userId, @RequestParam Double waterConsumed) throws InvalidValueException {
+        return waterIntakeService.getWaterConsumed(userId, waterConsumed);
     }
 }
