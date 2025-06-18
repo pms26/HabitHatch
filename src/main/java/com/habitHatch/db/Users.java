@@ -20,7 +20,6 @@ public class Users {
     @Column(name = "user_id")
     private String userId;
     @Column(name = "name")
-
     private String name;
     @Column(name = "email")
     private String email;

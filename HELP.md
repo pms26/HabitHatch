@@ -18,15 +18,7 @@ APIs:-
 6)Activity Tracking (/v1/activities):
    * water reminder per hour + 1 liter kafka notification  as 12 hours/(liters of water)
    * exercise reminder per hour + 2 notifications kafka notification 
- 7) 6 day exercise tracker:
-yoga
-suryanamaskar
-abs
-zumba
-
- * POST: This operation is used to record detailed exercise information for a specific day, potentially including the types of exercises performed, the number of sets, repetitions, and other relevant metrics.
- * GET: This operation allows a logged-in user to retrieve their exercise tracking data for the past 7 days, likely organized on a per-day basis and including the recorded details (counts, repetitions, etc.).
-8)Exercise info and benefits:
+ 7)Exercise info and benefits:
      AI based exercise info and benefits
 
 cloud deploy
