@@ -39,14 +39,7 @@ public class MessagingService {
             log.error("Exception while sendEmail ", e);
         }
     }
-//    public void sendSMS(String phoneNumber,String message){
-//        Message messageToSend = Message.creator(
-//                new PhoneNumber(phoneNumber),
-//                new PhoneNumber(fromNumber),
-//                message
-//        ).create();
-//
-//    }
+
 
 
 

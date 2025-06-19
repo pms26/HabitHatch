@@ -17,8 +17,6 @@ public class ConsumerConfig {
         MessagingService messagingService = new MessagingService();
         messagingService.sendEmail(message.getUserEmail(),"Pani pilo dost +"+message.getUserId(),"You have consumed "
                 + message.getWaterReminder() + " L of water today. Keep it up! Remember to drink more water to stay hydrated.");
-
-//        messagingService.sendSMS("8669657348","Pani pilo dost");
     }
 
 
