@@ -7,6 +7,7 @@ import com.habitHatch.Exception.MandatoryParameterException;
 import com.habitHatch.Exception.InvalidValueException;
 import com.habitHatch.UserMgmt.entity.UserDetailsRequest;
 import com.habitHatch.UserMgmt.entity.UserDetailsResponse;
+import com.habitHatch.UserMgmt.entity.UserLoginRequest;
 import com.habitHatch.UserMgmt.entity.UserRequest;
 
 import com.habitHatch.db.Users;
@@ -166,4 +167,7 @@ public class UserMgmtService{
         }
     }
 
+    public ResponseEntity<?> generateJwtToken(String userId) {
+        return null;
+    }
 }
