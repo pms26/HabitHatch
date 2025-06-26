@@ -172,12 +172,11 @@ public class UserMgmtService{
     }
 
     public ResponseEntity<?> userLogin(UserLogin userLogin) {
-        userLogin.setPassword(passwordEncoder.encode(userLogin.getPassword()));
         Users userEntity= usersDao.findByUserId(userLogin.getUserId());
         if (userEntity == null) {
             return new ResponseEntity<>("User not found with ID: " + userLogin.getUserId(), HttpStatus.NOT_FOUND);
         }
-        if(userEntity.getPassword().matches(userLogin.getPassword())){
+        if (passwordEncoder.matches(userLogin.getPassword(), userEntity.getPassword())) {
             return new ResponseEntity<>("Login successful", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);

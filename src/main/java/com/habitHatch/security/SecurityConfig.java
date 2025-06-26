@@ -21,9 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfiguration {
-    @Autowired
-    @Lazy
-    private  UserDetailsService userDetailsService;
+
 
     @Bean
     public UserDetailsService userDetailsService(){
@@ -32,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfiguration {
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
+        provider.setUserDetailsService(userDetailsService());
         provider.setPasswordEncoder(encode());
         return provider;
     }
@@ -51,6 +49,19 @@ public class SecurityConfig extends WebSecurityConfiguration {
                        .anyRequest().authenticated());
     return httpSecurity.build();
     }
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/v1/user/**").hasRole("USER")
+//                        .requestMatchers("/login").permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(form -> form
+//                        .loginPage("/login") // Specify the login page
+//                        .permitAll()); // Allow everyone to access the login page
+//        return httpSecurity.build();
+//    }
 
 
 
