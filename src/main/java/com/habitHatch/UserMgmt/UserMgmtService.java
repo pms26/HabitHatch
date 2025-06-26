@@ -11,9 +11,11 @@ import com.habitHatch.UserMgmt.entity.UserRequest;
 
 import com.habitHatch.db.Users;
 import com.habitHatch.db.UsersDao;
+import com.habitHatch.security.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.internal.Logger;
 
@@ -26,6 +28,8 @@ public class UserMgmtService{
     @Autowired
     UsersDao usersDao;
 
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
     public ResponseEntity<?> createUser(UserRequest userRequest) throws Exception {
 
         try{
@@ -37,7 +41,8 @@ public class UserMgmtService{
         userEntity.setName(userRequest.getName());
         userEntity.setEmail(userRequest.getEmail());
         userEntity.setMobileNumber(userRequest.getMobileNumber());
-        userEntity.setPassword(userRequest.getPassword());
+        userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        userEntity.setRole(userRequest.getRole());
         userEntity.setIsPremium(userRequest.getIsPremium());
 
         usersDao.save(userEntity);
@@ -166,4 +171,16 @@ public class UserMgmtService{
         }
     }
 
+    public ResponseEntity<?> userLogin(UserLogin userLogin) {
+        userLogin.setPassword(passwordEncoder.encode(userLogin.getPassword()));
+        Users userEntity= usersDao.findByUserId(userLogin.getUserId());
+        if (userEntity == null) {
+            return new ResponseEntity<>("User not found with ID: " + userLogin.getUserId(), HttpStatus.NOT_FOUND);
+        }
+        if(userEntity.getPassword().matches(userLogin.getPassword())){
+            return new ResponseEntity<>("Login successful", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
+        }
+    }
 }

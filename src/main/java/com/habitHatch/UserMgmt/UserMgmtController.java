@@ -6,6 +6,7 @@ import com.habitHatch.Exception.MandatoryParameterException;
 import com.habitHatch.UserMgmt.entity.UserDetailsRequest;
 import com.habitHatch.UserMgmt.entity.UserDetailsResponse;
 import com.habitHatch.UserMgmt.entity.UserRequest;
+import com.habitHatch.security.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,10 @@ public class UserMgmtController {
     @PostMapping(value = "/v1/user")
     public ResponseEntity<?> createUser(@RequestBody UserRequest userRequest) throws Exception {
         return userService.createUser(userRequest);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> userLogin(@RequestBody UserLogin userLogin) throws InvalidValueException {
+        return userService.userLogin(userLogin);
     }
 
     @PostMapping("/v1/user/details/{userId}")

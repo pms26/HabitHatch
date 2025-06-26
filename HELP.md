@@ -11,7 +11,8 @@ APIs:-
 * GET: This operation specifically calculates and retrieves the current BMI for the logged-in user, using their latest weight and height.
   4)Water Intake (/v1/water):
 * GET: This operation enables a logged-in user to retrieve their past water intake history. The request will likely allow specifying a particular date or a range of dates to filter the results.
-
+jwt 
+AI
 
  * 2)Summary (/v1/user/summary/{userId}):
    * GET: This operation retrieves a daily or weekly summary of the logged-in user's tracked data. This summary would likely include their total water intake, total exercise duration, and their current BMI for the specified period.

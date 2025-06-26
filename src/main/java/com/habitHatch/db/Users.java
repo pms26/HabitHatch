@@ -28,6 +28,8 @@ public class Users {
     @Column(name = "password")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).+$", message = "Password must contain at least one uppercase letter, one lowercase letter, and one special character")
     private String password;
+    @Column(name = "role")
+    private  String role;
     @Column(name = "is_premium")
     private Boolean isPremium;
     @Column(name = "weight")

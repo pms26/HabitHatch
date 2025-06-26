@@ -1,5 +1,6 @@
 package com.habitHatch.UserMgmt.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -19,4 +20,6 @@ public class UserRequest {
     private String countryCode;
     private String password;
     private Boolean isPremium;
+    @JsonProperty(value = "role",defaultValue = "USER")
+    private String role;
 }
