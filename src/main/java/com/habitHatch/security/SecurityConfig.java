@@ -4,33 +4,30 @@ package com.habitHatch.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-
-
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
-
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfiguration {
+public class SecurityConfig {
+
+    @Autowired
+    private  UserDetailsService userDetailsService;
 
 
-    @Bean
-    public UserDetailsService userDetailsService(){
-        return new CustomUserDetailsService();
-    }
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService());
+        provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(encode());
         return provider;
     }
@@ -39,30 +36,21 @@ public class SecurityConfig extends WebSecurityConfiguration {
     public BCryptPasswordEncoder encode() {
         return new BCryptPasswordEncoder();}
 
-   @Bean
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-       httpSecurity
-               .csrf(AbstractHttpConfigurer::disable)
-               .authorizeHttpRequests(auth -> auth
-                       .requestMatchers("/v1/user/**").hasRole("USER")
-                       .requestMatchers("/login").permitAll()
-                       .anyRequest().authenticated());
-    return httpSecurity.build();
+        httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(new AntPathRequestMatcher("/public/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/v1/admin/**")).hasRole("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/v1/user/**")).hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/v1/login")).hasAnyRole("USER", "ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        return httpSecurity.build();
     }
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/v1/user/**").hasRole("USER")
-//                        .requestMatchers("/login").permitAll()
-//                        .anyRequest().authenticated())
-//                .formLogin(form -> form
-//                        .loginPage("/login") // Specify the login page
-//                        .permitAll()); // Allow everyone to access the login page
-//        return httpSecurity.build();
-//    }
-
 
 
 }

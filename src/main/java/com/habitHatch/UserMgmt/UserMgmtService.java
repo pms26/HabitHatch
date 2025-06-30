@@ -42,7 +42,10 @@ public class UserMgmtService{
         userEntity.setEmail(userRequest.getEmail());
         userEntity.setMobileNumber(userRequest.getMobileNumber());
         userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        userEntity.setRole(userRequest.getRole());
+        if("ADMIN".equals(userRequest.getRole()))
+            userEntity.setRole("ROLE_ADMIN");
+        else
+            userEntity.setRole("ROLE_USER");
         userEntity.setIsPremium(userRequest.getIsPremium());
 
         usersDao.save(userEntity);
