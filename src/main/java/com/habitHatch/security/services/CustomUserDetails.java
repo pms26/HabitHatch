@@ -1,4 +1,4 @@
-package com.habitHatch.security;
+package com.habitHatch.security.services;
 
 
 import com.habitHatch.db.Users;

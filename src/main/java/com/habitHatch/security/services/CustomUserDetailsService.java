@@ -1,6 +1,7 @@
-package com.habitHatch.security;
+package com.habitHatch.security.services;
 
 import com.habitHatch.db.Users;
+import com.habitHatch.security.entity.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

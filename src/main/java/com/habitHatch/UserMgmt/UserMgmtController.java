@@ -6,11 +6,10 @@ import com.habitHatch.Exception.MandatoryParameterException;
 import com.habitHatch.UserMgmt.entity.UserDetailsRequest;
 import com.habitHatch.UserMgmt.entity.UserDetailsResponse;
 import com.habitHatch.UserMgmt.entity.UserRequest;
-import com.habitHatch.security.UserLogin;
+import com.habitHatch.security.entity.UserLogin;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 

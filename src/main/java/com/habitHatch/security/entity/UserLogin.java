@@ -1,4 +1,4 @@
-package com.habitHatch.security;
+package com.habitHatch.security.entity;
 
 import lombok.Builder;
 import lombok.Data;

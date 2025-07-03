@@ -11,10 +11,14 @@ import com.habitHatch.UserMgmt.entity.UserRequest;
 
 import com.habitHatch.db.Users;
 import com.habitHatch.db.UsersDao;
-import com.habitHatch.security.UserLogin;
+import com.habitHatch.security.entity.UserLogin;
+import com.habitHatch.security.services.JWTservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.internal.Logger;
@@ -27,6 +31,12 @@ public class UserMgmtService{
 
     @Autowired
     UsersDao usersDao;
+    @Autowired
+    AuthenticationManager authManager;
+    @Autowired
+    JWTservice jwtService;
+
+
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
@@ -184,5 +194,13 @@ public class UserMgmtService{
         } else {
             return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
         }
+    }
+    public String verifyUser(Users user){
+        Authentication authentication= authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword()));
+
+        if(authentication.isAuthenticated())
+            return jwtService.generateToken(user.getUserId());
+        else return "failed to authenticate user";
     }
 }
