@@ -17,6 +17,7 @@ import java.util.Map;
 
 @Service
 public class JWTservice {
+    private String secretKey="";
 
     public String generateToken(String userId) {
         Map<String, Object> claims = new HashMap<>();
@@ -26,7 +27,7 @@ public class JWTservice {
                 .add(claims)
                 .subject(userId)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 60*60*30))
                 .and()
                 .signWith(getKey())
                 .compact();
@@ -35,7 +36,7 @@ public class JWTservice {
        byte[] keyBytes= Decoders.BASE64.decode(secretKey);
        return Keys.hmacShaKeyFor(keyBytes);
     }
-private String secretKey="";
+
 
     public JWTservice(){
         try{

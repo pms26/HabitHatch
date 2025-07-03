@@ -195,12 +195,12 @@ public class UserMgmtService{
             return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
         }
     }
-    public String verifyUser(Users user){
+    public String verifyUser(UserLogin userLogin){
         Authentication authentication= authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword()));
+                new UsernamePasswordAuthenticationToken(userLogin.getUserId(), userLogin.getPassword()));
 
         if(authentication.isAuthenticated())
-            return jwtService.generateToken(user.getUserId());
+            return jwtService.generateToken(userLogin.getUserId());
         else return "failed to authenticate user";
     }
 }

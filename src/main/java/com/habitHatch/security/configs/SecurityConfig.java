@@ -44,10 +44,10 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(new AntPathRequestMatcher("/public/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/v1/login")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/v1/admin/**")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/v1/user/**")).hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/v1/login")).hasAnyRole("USER", "ADMIN")
+//                        .requestMatchers(new AntPathRequestMatcher("/v1/login")).hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
