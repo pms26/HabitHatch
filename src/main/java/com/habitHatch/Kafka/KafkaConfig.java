@@ -1,16 +1,16 @@
-package com.habitHatch.Kafka;
-
-import org.apache.kafka.clients.admin.NewTopic;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.config.TopicBuilder;
-
-@Configuration
-public class KafkaConfig {
-
-    @Bean
-    public NewTopic createTopicJson() {
-        return TopicBuilder.name("HabitHatchTopic_Json").build();
-    }
-
-}
+//package com.habitHatch.Kafka;
+//
+//import org.apache.kafka.clients.admin.NewTopic;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.kafka.config.TopicBuilder;
+//
+//@Configuration
+//public class KafkaConfig {
+//
+//    @Bean
+//    public NewTopic createTopicJson() {
+//        return TopicBuilder.name("HabitHatchTopic_Json").build();
+//    }
+//
+//}
