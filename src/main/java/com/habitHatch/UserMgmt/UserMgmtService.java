@@ -23,6 +23,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.internal.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -195,12 +197,17 @@ public class UserMgmtService{
             return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
         }
     }
-    public String verifyUser(UserLogin userLogin){
-        Authentication authentication= authManager.authenticate(
+    public ResponseEntity<?> verifyUser(UserLogin userLogin) {
+        Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userLogin.getUserId(), userLogin.getPassword()));
 
-        if(authentication.isAuthenticated())
-            return jwtService.generateToken(userLogin.getUserId());
-        else return "failed to authenticate user";
+        if (authentication.isAuthenticated()) {
+            String token = jwtService.generateToken(userLogin.getUserId());
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+        }
     }
 }
