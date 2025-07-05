@@ -24,7 +24,7 @@ public class UserMgmtController {
     }
 
     @PostMapping(value="/v1/login")
-    public  ResponseEntity<?> login(@RequestBody UserLogin userLogin)
+    public ResponseEntity<?> login(@RequestBody UserLogin userLogin)
     {
         return userService.verifyUser(userLogin);
     }
