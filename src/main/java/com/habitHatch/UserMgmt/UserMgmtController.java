@@ -18,7 +18,7 @@ public class UserMgmtController {
 
     @Autowired
     UserMgmtService userService;
-    @PostMapping(value = "/v1/user")
+    @PostMapping(value = "/v1/register")
     public ResponseEntity<?> createUser(@RequestBody UserRequest userRequest) throws Exception {
         return userService.createUser(userRequest);
     }

@@ -100,7 +100,6 @@ public class UserMgmtService{
         if (userEntity == null) {
             throw new InvalidValueException("HH_User_106", "User not found with ID :" + userId);
         }
-        validateUserRequest(userRequest);
         Optional.ofNullable(userRequest.getName()).ifPresent(userEntity::setName);
         Optional.ofNullable(userRequest.getMobileNumber()).ifPresent(userEntity::setMobileNumber);
         Optional.ofNullable(userRequest.getPassword()).ifPresent(userEntity::setPassword);
