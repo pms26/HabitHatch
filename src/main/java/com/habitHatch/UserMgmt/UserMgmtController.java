@@ -6,8 +6,11 @@ import com.habitHatch.Exception.MandatoryParameterException;
 import com.habitHatch.UserMgmt.entity.UserDetailsRequest;
 import com.habitHatch.UserMgmt.entity.UserDetailsResponse;
 import com.habitHatch.UserMgmt.entity.UserRequest;
+import com.habitHatch.security.entity.UserLogin;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +21,19 @@ public class UserMgmtController {
     @PostMapping(value = "/v1/user")
     public ResponseEntity<?> createUser(@RequestBody UserRequest userRequest) throws Exception {
         return userService.createUser(userRequest);
+    }
+
+    @PostMapping(value="/v1/login")
+    public ResponseEntity<?> login(@RequestBody UserLogin userLogin)
+    {
+        return userService.verifyUser(userLogin);
+    }
+
+
+    @GetMapping("/csrfToken")
+    CsrfToken getCsrfToken(HttpServletRequest request){
+        return (CsrfToken) request.getAttribute("_csrf");
+
     }
 
     @PostMapping("/v1/user/details/{userId}")

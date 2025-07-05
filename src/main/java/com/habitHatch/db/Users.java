@@ -20,7 +20,6 @@ public class Users {
     @Column(name = "user_id")
     private String userId;
     @Column(name = "name")
-
     private String name;
     @Column(name = "email")
     private String email;
@@ -29,6 +28,8 @@ public class Users {
     @Column(name = "password")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).+$", message = "Password must contain at least one uppercase letter, one lowercase letter, and one special character")
     private String password;
+    @Column(name = "role")
+    private  String role;
     @Column(name = "is_premium")
     private Boolean isPremium;
     @Column(name = "weight")
@@ -41,6 +42,11 @@ public class Users {
     private String gender;
     @Column(name = "heart_rate")
     private Integer heartRate;
-
+    @Column(name="bmi")
+    private Double bmi;
+    @Column(name="water_intake")
+    private Double waterIntake;
+    @Column(name = "water_consumed")
+    private Double waterConsumed;
 
 }

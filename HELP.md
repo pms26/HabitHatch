@@ -11,22 +11,15 @@ APIs:-
 * GET: This operation specifically calculates and retrieves the current BMI for the logged-in user, using their latest weight and height.
   4)Water Intake (/v1/water):
 * GET: This operation enables a logged-in user to retrieve their past water intake history. The request will likely allow specifying a particular date or a range of dates to filter the results.
-
+jwt 
+AI
 
  * 2)Summary (/v1/user/summary/{userId}):
    * GET: This operation retrieves a daily or weekly summary of the logged-in user's tracked data. This summary would likely include their total water intake, total exercise duration, and their current BMI for the specified period.
 6)Activity Tracking (/v1/activities):
    * water reminder per hour + 1 liter kafka notification  as 12 hours/(liters of water)
    * exercise reminder per hour + 2 notifications kafka notification 
- 7) 6 day exercise tracker:
-yoga
-suryanamaskar
-abs
-zumba
-
- * POST: This operation is used to record detailed exercise information for a specific day, potentially including the types of exercises performed, the number of sets, repetitions, and other relevant metrics.
- * GET: This operation allows a logged-in user to retrieve their exercise tracking data for the past 7 days, likely organized on a per-day basis and including the recorded details (counts, repetitions, etc.).
-8)Exercise info and benefits:
+ 7)Exercise info and benefits:
      AI based exercise info and benefits
 
 cloud deploy

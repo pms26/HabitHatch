@@ -1,20 +1,23 @@
 package com.habitHatch.Kafka;
 
-import com.habitHatch.WaterIntake.entity.WaterIntake;
-import com.habitHatch.WaterIntake.entity.WaterIntakeResp;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.habitHatch.WaterIntake.entityClass.WaterIntake;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class ConsumerConfig {
+
+
     @KafkaListener(topics = "HabitHatchTopic_Json", groupId = "habit-hatch-group")
-    public ResponseEntity<String> consumeMessage(WaterIntake message){
-
-        return new ResponseEntity<>("Message received from Kafka topic successfully", HttpStatus.OK);
-
-
+    public void consumeMessage(WaterIntake message){
+        log.info("Consumed message: " + message);
+        MessagingService messagingService = new MessagingService();
+        messagingService.sendEmail(message.getUserEmail(),"Pani pilo dost +"+message.getUserId(),"You have consumed "
+                + message.getWaterReminder() + " L of water today. Keep it up! Remember to drink more water to stay hydrated.");
     }
+
 
 }

@@ -11,12 +11,20 @@ import com.habitHatch.UserMgmt.entity.UserRequest;
 
 import com.habitHatch.db.Users;
 import com.habitHatch.db.UsersDao;
+import com.habitHatch.security.entity.UserLogin;
+import com.habitHatch.security.services.JWTservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.internal.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -25,7 +33,15 @@ public class UserMgmtService{
 
     @Autowired
     UsersDao usersDao;
+    @Autowired
+    AuthenticationManager authManager;
+    @Autowired
+    JWTservice jwtService;
 
+
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
     public ResponseEntity<?> createUser(UserRequest userRequest) throws Exception {
 
         try{
@@ -37,7 +53,11 @@ public class UserMgmtService{
         userEntity.setName(userRequest.getName());
         userEntity.setEmail(userRequest.getEmail());
         userEntity.setMobileNumber(userRequest.getMobileNumber());
-        userEntity.setPassword(userRequest.getPassword());
+        userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        if("ADMIN".equals(userRequest.getRole()))
+            userEntity.setRole("ROLE_ADMIN");
+        else
+            userEntity.setRole("ROLE_USER");
         userEntity.setIsPremium(userRequest.getIsPremium());
 
         usersDao.save(userEntity);
@@ -166,4 +186,28 @@ public class UserMgmtService{
         }
     }
 
+    public ResponseEntity<?> userLogin(UserLogin userLogin) {
+        Users userEntity= usersDao.findByUserId(userLogin.getUserId());
+        if (userEntity == null) {
+            return new ResponseEntity<>("User not found with ID: " + userLogin.getUserId(), HttpStatus.NOT_FOUND);
+        }
+        if (passwordEncoder.matches(userLogin.getPassword(), userEntity.getPassword())) {
+            return new ResponseEntity<>("Login successful", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
+        }
+    }
+    public ResponseEntity<?> verifyUser(UserLogin userLogin) {
+        Authentication authentication = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userLogin.getUserId(), userLogin.getPassword()));
+
+        if (authentication.isAuthenticated()) {
+            String token = jwtService.generateToken(userLogin.getUserId());
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+        }
+    }
 }
